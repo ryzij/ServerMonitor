@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="MonitorAgent.API/MonitorAgent.API.csproj" />
+  <Project Path="MonitorAgent.Application/MonitorAgent.Application.csproj" />
+  <Project Path="MonitorAgent.Core/MonitorAgent.Core.csproj" />
+  
+</Solution>
