@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using MonitorAgent.API.Contracts;
+using MonitorAgent.Application.Services;
 using MonitorAgent.Core.Abstraction;
 namespace MonitorAgent.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class MonitorController(IMonitorService monitorService) : ControllerBase
+public class MonitorController(
+    IMonitorService monitorService,
+    CpuMonitorBackgroundService cpuMonitorService)
+    : ControllerBase
 {
     [HttpGet("uptime")]
     public async Task<ActionResult<decimal>> GetUptimeAsync(CancellationToken cancellationToken = default)
@@ -30,9 +34,18 @@ public class MonitorController(IMonitorService monitorService) : ControllerBase
     }
     
     [HttpGet("loadavg")]
-    public async Task<ActionResult<LoadAverageResponse>> GetActionResultAsync(CancellationToken cancellationToken = default)
+    public async Task<ActionResult<LoadAverageResponse>> GetLoadAverageAsync(CancellationToken cancellationToken = default)
     {
         var response = new LoadAverageResponse(await monitorService.GetLoadAverageAsync(cancellationToken));
+        return Ok(response);
+    }
+
+    [HttpGet("cpuUsage")]
+    public async Task<ActionResult<CpuUsageResponse>> GetCpuUsageAsync(CancellationToken cancellationToken = default)
+    {
+        var usage = await cpuMonitorService.GetCpuUsageAsync(cancellationToken);
+        var response = new CpuUsageResponse(usage.TotalUsagePercent, usage.CoresUsagePercent);
+
         return Ok(response);
     }
 }

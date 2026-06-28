@@ -1,5 +1,6 @@
 using MonitorAgent.Core.Abstraction;
 using MonitorAgent.Application.Services;
+using MonitorAgent.Application.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,12 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<CpuMonitorSettings>(builder.Configuration.GetSection("CpuMonitorSettings"));
+
 builder.Services.AddScoped<IMonitorService, MonitorService>();
+builder.Services.AddSingleton<RawCpuMonitorService>();
+builder.Services.AddSingleton<CpuMonitorBackgroundService>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<CpuMonitorBackgroundService>());
 
 var app = builder.Build();
 
