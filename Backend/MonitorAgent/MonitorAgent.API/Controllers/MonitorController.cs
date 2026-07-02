@@ -48,4 +48,17 @@ public class MonitorController(
 
         return Ok(response);
     }
+
+    [HttpGet("connections")]
+    public async Task<ActionResult> GetConnectionsCountAsync(CancellationToken cancellationToken = default)
+    {
+        var count = await monitorService.GetConnectionsCountAsync(cancellationToken);
+        var response = new ConnectionsResponse
+        {
+             Tcp = count.TcpCount,
+             Udp = count.UdpCount 
+        };
+
+        return Ok(response);
+    }
 }

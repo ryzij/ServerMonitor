@@ -73,6 +73,17 @@ public class MonitorService : IMonitorService
 
         return loadavg;
     }
+
+    // TODO: проверить на других системах
+    public async Task<ConnectionsCount> GetConnectionsCountAsync(CancellationToken cancellationToken = default)
+    {
+        var sockstat = await File.ReadAllLinesAsync("/proc/net/sockstat", cancellationToken);
+        
+        return new ConnectionsCount(
+            int.Parse(sockstat[0].Split()[2]),
+            int.Parse(sockstat[1].Split()[2])
+        );
+    }
     
     public static int ParseInt(string str) => int.Parse(Regex.Match(str, @"\d+").Value);
 }
