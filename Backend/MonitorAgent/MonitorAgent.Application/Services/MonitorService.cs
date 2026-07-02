@@ -30,7 +30,7 @@ public class MonitorService : IMonitorService
     public async Task<decimal> GetUptimeAsync(CancellationToken cancellationToken = default)
     {
         var uptime = await File.ReadAllTextAsync("/proc/uptime", cancellationToken);
-        return decimal.Parse(uptime.Split()[1], CultureInfo.InvariantCulture);
+        return decimal.Parse(uptime.Split()[0], CultureInfo.InvariantCulture);
     }
 
     public async Task<MemoryInfo> GetMemoryInfoAsync(CancellationToken cancellationToken = default)
