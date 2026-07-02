@@ -15,7 +15,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<CpuMonitorSettings>(builder.Configuration.GetSection("CpuMonitorSettings"));
 
+builder.Services.AddScoped<IProcessStarterService, ProcessStarterService>();
 builder.Services.AddScoped<IMonitorService, MonitorService>();
+
 builder.Services.AddSingleton<RawCpuMonitorService>();
 builder.Services.AddSingleton<CpuMonitorBackgroundService>();
 builder.Services.AddHostedService(provider => provider.GetRequiredService<CpuMonitorBackgroundService>());
