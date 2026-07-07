@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MonitorPanel.API/MonitorPanel.API.csproj" />
+  <Project Path="MonitorPanel.Core/MonitorPanel.Core.csproj" />
+</Solution>
