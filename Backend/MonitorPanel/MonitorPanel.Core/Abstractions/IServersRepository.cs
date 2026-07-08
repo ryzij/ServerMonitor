@@ -5,7 +5,7 @@ public interface IServersRepository
 {
     Task<IEnumerable<Server>> GetAllServersAsync();
     Task<Server?> GetServerByIdAsync(Guid id);
-    Task AddServerAsync(Server server);
-    Task UpdateServerAsync(Guid id, Server server);
-    Task DeleteServerAsync(Guid id);
+    Task<Guid> AddServerAsync(Server server);
+    Task<Guid> UpdateServerAsync(Guid id, string name, bool isHttps, string address, string? path, int port);
+    Task<Guid> DeleteServerAsync(Guid id);
 }

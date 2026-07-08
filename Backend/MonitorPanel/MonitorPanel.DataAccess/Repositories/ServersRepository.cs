@@ -1,31 +1,60 @@
+using Microsoft.EntityFrameworkCore;
 using MonitorPanel.Core.Abstractions;
 using MonitorPanel.Core.Models;
+using MonitorPanel.DataAccess.Entities;
 namespace MonitorPanel.DataAccess.Repositories;
 
-public class ServersRepository : IServersRepository
+public class ServersRepository(MonitorPanelDbContext db) : IServersRepository
 {
-    public Task AddServerAsync(Server server)
+    public async Task<Guid> AddServerAsync(Server server)
     {
-        throw new NotImplementedException();
+        var entity = new ServerEntity
+        {
+            Id = server.Id,
+            Name = server.Name,
+            IsHttps = server.IsHttps,
+            Address = server.Address,
+            Path = server.Path,
+            Port = server.Port
+        };
+        
+        await db.Servers.AddAsync(entity);
+        await db.SaveChangesAsync();
+
+        return entity.Id;
     }
 
-    public Task DeleteServerAsync(Guid id)
+    public async Task<Guid> DeleteServerAsync(Guid id)
     {
-        throw new NotImplementedException();
+        await db.Servers.Where(s => s.Id == id).ExecuteDeleteAsync();
+        return id;
     }
 
-    public Task<IEnumerable<Server>> GetAllServersAsync()
+    public async Task<IEnumerable<Server>> GetAllServersAsync()
     {
-        throw new NotImplementedException();
+        return await db.Servers.AsNoTracking()
+            .Select(s => new Server(s.Id, s.Name, s.IsHttps, s.Address, s.Path, s.Port))
+            .ToListAsync();
     }
 
-    public Task<Server?> GetServerByIdAsync(Guid id)
+    public async Task<Server?> GetServerByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var entity = await db.Servers.FirstOrDefaultAsync(s => s.Id == id);
+        return entity == null ? null : new Server(entity.Id, entity.Name, entity.IsHttps, entity.Address, entity.Path, entity.Port);
     }
 
-    public Task UpdateServerAsync(Guid id, Server server)
+    public async Task<Guid> UpdateServerAsync(Guid id, string name, bool isHttps, string address, string? path, int port)
     {
-        throw new NotImplementedException();
+        var entity = await db.Servers.FirstOrDefaultAsync(s => s.Id == id)
+            ?? throw new InvalidOperationException("Server not found");
+        
+        entity.Name = name;
+        entity.IsHttps = isHttps;
+        entity.Address = address;
+        entity.Path = path;
+        entity.Port = port;
+
+        await db.SaveChangesAsync();
+        return entity.Id;
     }
 }
