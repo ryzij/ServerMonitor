@@ -8,7 +8,7 @@ public class ServerEntity
     public bool IsHttps { get; set; }
     [Required]
     public string Address { get; set; } = null!;
-    string? Path { get; set; }
+    public string? Path { get; set; }
     [Required]
     public int Port { get; set; }
 }
