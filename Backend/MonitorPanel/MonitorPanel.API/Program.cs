@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using MonitorPanel.Core.Abstractions;
+using MonitorPanel.DataAccess;
+using MonitorPanel.DataAccess.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +12,11 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<MonitorPanelDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IServersRepository, ServersRepository>();
 
 var app = builder.Build();
 
