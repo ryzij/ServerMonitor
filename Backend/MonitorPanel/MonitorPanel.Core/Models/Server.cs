@@ -3,10 +3,10 @@ namespace MonitorPanel.Core.Models;
 public class Server(
     Guid id,
     string name,
-    bool isHttps,
     string address,
-    string? path,
-    int port)
+    string? path = null,
+    bool isHttps = true,
+    int port = 443)
 {
     public readonly Guid Id = id;
     public string Name { get; set; } = name;

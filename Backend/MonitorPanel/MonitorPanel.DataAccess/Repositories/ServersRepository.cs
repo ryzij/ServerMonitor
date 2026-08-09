@@ -33,14 +33,14 @@ public class ServersRepository(MonitorPanelDbContext db) : IServersRepository
     public async Task<IEnumerable<Server>> GetAllServersAsync()
     {
         return await db.Servers.AsNoTracking()
-            .Select(s => new Server(s.Id, s.Name, s.IsHttps, s.Address, s.Path, s.Port))
+            .Select(s => new Server(s.Id, s.Name, s.Address, s.Path, s.IsHttps, s.Port))
             .ToListAsync();
     }
 
     public async Task<Server?> GetServerByIdAsync(Guid id)
     {
         var entity = await db.Servers.FirstOrDefaultAsync(s => s.Id == id);
-        return entity == null ? null : new Server(entity.Id, entity.Name, entity.IsHttps, entity.Address, entity.Path, entity.Port);
+        return entity == null ? null : new Server(entity.Id, entity.Name, entity.Address, entity.Path, entity.IsHttps, entity.Port);
     }
 
     public async Task<Guid> UpdateServerAsync(Guid id, string name, bool isHttps, string address, string? path, int port)
