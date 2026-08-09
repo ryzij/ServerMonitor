@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="MonitorPanel.API/MonitorPanel.API.csproj" />
+  <Project Path="MonitorPanel.Application/MonitorPanel.Application.csproj" />
   <Project Path="MonitorPanel.Core/MonitorPanel.Core.csproj" />
   <Project Path="MonitorPanel.DataAccess/MonitorPanel.DataAccess.csproj" />
 </Solution>
