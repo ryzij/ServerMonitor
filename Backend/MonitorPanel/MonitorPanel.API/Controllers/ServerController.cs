@@ -9,7 +9,7 @@ namespace MonitorPanel.API.Controllers;
 [Route("[controller]")]
 public class ServerController(IServerService serverService) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<ActionResult<List<ServerDto>>> GetAllServers(CancellationToken cancellationToken = default)
     {
         var servers = await serverService.GetAllServersAsync(cancellationToken);
@@ -51,7 +51,7 @@ public class ServerController(IServerService serverService) : ControllerBase
         return CreatedAtAction(nameof(GetServerById), new { id }, server);
     }
 
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
     public async Task<IActionResult> UpdateServer(Guid id, ServerDto dto, CancellationToken cancellationToken = default)
     {
         var updatedId = await serverService.UpdateServerAsync(id, dto.Name, dto.IsHttps, dto.Address, dto.Path, dto.Port, cancellationToken);
